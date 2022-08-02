@@ -1,0 +1,40 @@
+services:
+  server1:
+    # build server image and re-use it
+    build:
+      context: server
+    image: consul-server
+    command: -node consul-server1
+    networks:
+      - consul_net
+  server2:
+    image: consul-server
+    command: -node consul-server2
+    networks:
+      - consul_net
+  server3:
+    image: consul-server
+    command: -node consul-server3
+    networks:
+      - consul_net
+  client1:
+    # build client image and re-use it
+    build:
+      context: client
+    image: consul-client
+    command: -node consul-client1
+    networks:
+      - consul_net
+  client2:
+    image: consul-client
+    command: -node consul-client2
+    networks:
+      - consul_net
+  client3:
+    image: consul-client
+    command: -node consul-client3
+    networks:
+      - consul_net
+
+networks:
+  consul_net:

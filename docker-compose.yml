@@ -1,0 +1,123 @@
+version: '3.7'
+
+services:
+
+  server1:
+    image: docker.io/library/consul:1.12.3
+    container_name: consul-server1
+    hostname: consul-server1
+    restart: always
+    volumes:
+      - ./server1.hcl:/consul/config/server.hcl:ro
+    ports:
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    dns:
+      - 10.5.0.2
+      - 1.1.1.1
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.2
+    command: agent -config-file=/consul/config/server.hcl -bootstrap-expect 3
+
+  server2:
+    image: docker.io/library/consul:1.12.3
+    container_name: consul-server2
+    hostname: consul-server2
+    restart: always
+    volumes:
+      - ./server2.hcl:/consul/config/server.hcl:ro
+    ports:
+      - "8501:8500"
+      - "8601:8600/tcp"
+      - "8601:8600/udp"
+    dns:
+      - 10.5.0.2
+      - 1.1.1.1
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.3
+    command: agent -config-file=/consul/config/server.hcl -bootstrap-expect 3
+
+  server3:
+    image: docker.io/library/consul:1.12.3
+    container_name: consul-server3
+    hostname: consul-server3
+    restart: always
+    volumes:
+      - ./server3.hcl:/consul/config/server.hcl:ro
+    ports:
+      - "8502:8500"
+      - "8602:8600/tcp"
+      - "8602:8600/udp"
+    dns:
+      - 10.5.0.2
+      - 1.1.1.1
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.4
+    command: agent -config-file=/consul/config/server.hcl -bootstrap-expect 3
+
+  client1:
+    image: docker.io/library/consul:1.12.3
+    container_name: consul-client1
+    hostname: consul-client1
+    restart: always
+    volumes:
+      - ./client1.hcl:/consul/config/client.hcl:ro
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.5
+    # ports:
+    #   - "9003:9003"
+    dns:
+      - 10.5.0.2
+      - 1.1.1.1
+    #    environment:
+    #      - PORT=9003
+    command: agent -config-file=/consul/config/client.hcl
+
+  client2:
+    image: docker.io/library/consul:1.12.3
+    container_name: consul-client2
+    hostname: consul-client2
+    restart: always
+    volumes:
+      - ./client2.hcl:/consul/config/client.hcl:ro
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.6
+    # ports:
+    #   - "9003:9003"
+    dns:
+      - 10.5.0.2
+      - 1.1.1.1
+    #    environment:
+    #      - PORT=9003
+    command: agent -config-file=/consul/config/client.hcl
+  client3:
+    image: docker.io/library/consul:1.12.3
+    container_name: consul-client3
+    hostname: consul-client3
+    restart: always
+    volumes:
+      - ./client3.hcl:/consul/config/client.hcl:ro
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.7
+    # ports:
+    #   - "9003:9003"
+    dns:
+      - 10.5.0.2
+      - 1.1.1.1
+    # environment:
+    #   - PORT=9003
+    command: agent -config-file=/consul/config/client.hcl
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
