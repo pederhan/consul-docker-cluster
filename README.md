@@ -1,6 +1,6 @@
-# DNS Server Discovery with Consul
+# DNS Service Discovery with Consul
 
-intro
+This repository contains an implementation of a Consul cluster with 3 server agents and 2 different services across 4 client agents. Service Discovery is facilitated through DNS.
 
 ## Running
 
@@ -10,7 +10,7 @@ docker compose build
 docker compose up -d
 ```
 
-This creates a Consul cluster consisting of 7 containers, of which 3 are Consul Server agents and 4 are Consul Client agents.
+These command create a Consul cluster consisting of 7 containers, of which 3 are Consul Server agents and 4 are Consul Client agents.
 The 4 clients consist of 2 containers running a mock currency API, and 2 containers running a mock quotes API.
 
 
