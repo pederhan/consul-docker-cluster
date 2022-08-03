@@ -38,8 +38,45 @@ Optionally specify number of iterations for each service (by default 4):
 
 `./test.sh [N_ITERATIONS]`
 
+## Currency Service
 
+The currency service exposes the following endpoints:
 
+`GET /rate/{base_currency}?target={target_currency}`
+
+Get the conversion rate between two currencies. (complete bogus)
+
+`GET /discover`
+
+Ask the currency service to contact the quotes service.
+
+`GET /hostname`
+
+Get the hostname of the node.
+
+`GET /health`
+
+Return health status (used by Consul health check).
+
+## Quotes Service
+
+The quotes service exposes the following endpoints:
+
+`GET /`
+
+Fetch a random movie quote.
+
+`GET /discover`
+
+Ask the quotes service to contact the currency service.
+
+`GET /hostname`
+
+Get the hostname of the node.
+
+`GET /health`
+
+Return health status (used by Consul health check).
 
 ## TODO
 
