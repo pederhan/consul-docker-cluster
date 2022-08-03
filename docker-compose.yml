@@ -59,62 +59,66 @@ services:
         ipv4_address: 10.5.0.4
     command: agent -config-file=/consul/config/server.hcl -bootstrap-expect 3
 
-  client1:
-    image: docker.io/library/consul:1.12.3
-    container_name: consul-client1
-    hostname: consul-client1
+  currency-client1:
+    build:
+      context: ./services/currency
+      dockerfile: Dockerfile
+    image: currencyclient
+    container_name: currency-client1
+    hostname: currency-client1
     restart: always
-    volumes:
-      - ./client1.hcl:/consul/config/client.hcl:ro
+    ports:
+      - "8080:80"
     networks:
       vpcbr:
         ipv4_address: 10.5.0.5
-    # ports:
-    #   - "9003:9003"
     dns:
       - 10.5.0.2
       - 1.1.1.1
-    #    environment:
-    #      - PORT=9003
-    command: agent -config-file=/consul/config/client.hcl
 
-  client2:
-    image: docker.io/library/consul:1.12.3
-    container_name: consul-client2
-    hostname: consul-client2
+  currency-client2:
+    image: currencyclient
+    container_name: currency-client2
+    hostname: currency-client2
     restart: always
-    volumes:
-      - ./client2.hcl:/consul/config/client.hcl:ro
+    ports:
+      - "8081:80"
     networks:
       vpcbr:
         ipv4_address: 10.5.0.6
-    # ports:
-    #   - "9003:9003"
     dns:
       - 10.5.0.2
       - 1.1.1.1
-    #    environment:
-    #      - PORT=9003
-    command: agent -config-file=/consul/config/client.hcl
-  client3:
-    image: docker.io/library/consul:1.12.3
-    container_name: consul-client3
-    hostname: consul-client3
+  quotes-client1:
+    build:
+      context: ./services/quotes
+      dockerfile: Dockerfile
+    image: quotesclient
+    container_name: quotes-client1
+    hostname: quotes-client1
     restart: always
-    volumes:
-      - ./client3.hcl:/consul/config/client.hcl:ro
+    ports:
+      - "8082:80"
     networks:
       vpcbr:
         ipv4_address: 10.5.0.7
-    # ports:
-    #   - "9003:9003"
     dns:
       - 10.5.0.2
       - 1.1.1.1
-    # environment:
-    #   - PORT=9003
-    command: agent -config-file=/consul/config/client.hcl
 
+  quotes-client2:
+    image: quotesclient
+    container_name: quotes-client2
+    hostname: quotes-client2
+    restart: always
+    ports:
+      - "8083:80"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.8
+    dns:
+      - 10.5.0.2
+      - 1.1.1.1
 networks:
   vpcbr:
     driver: bridge
